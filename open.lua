@@ -124,40 +124,43 @@ function money_str(money)
 	return string
   end
 
-
-  function open(i, inbox_count, k)
-	wait_for_update(function()
-		local _, _, _, _, money, COD_amount, _, has_item = GetInboxHeaderInfo(i)
-		if GetInboxNumItems() < inbox_count then
-			return k(false)
-		elseif  COD_amount > 0 then
-			return k(true)
-			-- /script DEFAULT_CHAT_FRAME:AddMessage();
-		elseif has_item then
-			local itm_name, itm_id, itm_qty, _, _ = GetInboxItem(i)
-			local inventory_count_before = inventory_count()
-			TakeInboxItem(i)
-			Postal:Print("Received: \124Hitem:"..tostring(itm_id).."::::::::70:::::\124h["..itm_name.."]\124h (x"..tostring(itm_qty)..")", 1, 1, 0)
-			controller().wait(function() return inventory_count() > inventory_count_before end, function()
-			return open(i, inbox_count, k)
-			end)
-		elseif money > 0 then
-			local money_before = GetMoney()
-			TakeInboxMoney(i)
-			total_money = total_money + money
-			Postal:Print("Received: "..money_str(money), 1, 1, 0)
-			controller().wait(function() return GetMoney() > money_before end, function()
-			return open(i, inbox_count, k)
-			end)
-		else
-			local inbox_count_before = GetInboxNumItems()
-			DeleteInboxItem(i)
-			controller().wait(function() return GetInboxNumItems() < inbox_count_before end, function()
-			return open(i, inbox_count, k)
-			end)
-		end
-	end)
+--This section of code was taken from the original code in 'Postal' by MarcelineVQ: https://github.com/MarcelineVQ/Postal/blob/main/open.lua
+--Color modified from bright yellow by Ayri of Turtle WoW, original color code is |cff00ff00 for reference, new one is |cff318ce7
+function open(i, inbox_count, k)
+    wait_for_update(function()
+        local _, _, sender, subject, money, COD_amount, _, has_item = GetInboxHeaderInfo(i)
+        if GetInboxNumItems() < inbox_count then
+            return k(false)
+        elseif COD_amount > 0 then
+            return k(true)
+        elseif has_item then
+            local itm_name, _, itm_qty, _, _ = GetInboxItem(i)
+            TakeInboxItem(i)
+            Postal:Print("Received from |cff318ce7"..sender.."|r: "..itm_name.." (x"..itm_qty..")", 1, 1, 0)
+            controller().wait(function() return not ({GetInboxHeaderInfo(i)})[8] or GetInboxNumItems() < inbox_count end, function()
+                return open(i, inbox_count, k)
+            end)
+        elseif money > 0 then
+            TakeInboxMoney(i)
+            local _,ix = strfind(subject, "Auction successful: ",1,true)
+            local sub
+            if ix then sub = strsub(subject,ix) end
+            if ix
+              then Postal:Print("Sold"..sub..": "..money_str(money), 1, 1, 0)
+              else Postal:Print("Received from |cff318ce7"..sender.."|r: "..money_str(money), 1, 1, 0)
+            end
+            controller().wait(function() return ({GetInboxHeaderInfo(i)})[5] == 0 or GetInboxNumItems() < inbox_count end, function()
+                return open(i, inbox_count, k)
+            end)
+        else
+            DeleteInboxItem(i)
+            controller().wait(function() return GetInboxNumItems() < inbox_count end, function()
+                return open(i, inbox_count, k)
+            end)
+        end
+    end)
 end
+--End of code section
 
 function inventory_count()
 	local acc = 0
