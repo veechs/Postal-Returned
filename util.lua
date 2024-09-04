@@ -1,5 +1,8 @@
 Postal.util = {}
 
+local tempTable = {}
+local holds
+
 function Postal.util.set_add(set, key)
     set[key] = true
 end
@@ -21,11 +24,11 @@ function Postal.util.set_size(set)
 end
 
 function Postal.util.set_to_array(set)
-	local array = {}
+	Postal.util.tableClear(tempTable)
 	for element, _ in pairs(set) do
-		tinsert(array, element)
+		tinsert(tempTable, element)
 	end
-	return array
+	return tempTable
 end
 
 function Postal.util.any(xs, p)
@@ -45,39 +48,55 @@ function Postal.util.all(xs, p)
 end
 
 function Postal.util.set_filter(xs, p)
-	ys = {}
+	Postal.util.tableClear(tempTable)
 	for x, _ in pairs(xs) do
 		if p(x) then
-			Postal.util.set_add(ys, x)
+			Postal.util.set_add(tempTable, x)
 		end
 	end
-	return ys
+	return tempTable
 end
 
 function Postal.util.filter(xs, p)
-	ys = {}
+	Postal.util.tableClear(tempTable)
 	for _, x in ipairs(xs) do
 		if p(x) then
-			tinsert(ys, x)
+			tinsert(tempTable, x)
 		end
 	end
-	return ys
+	return tempTable
 end
 
 function Postal.util.map(xs, f)
-	ys = {}
+	Postal.util.tableClear(tempTable)
 	for _, x in ipairs(xs) do
-		tinsert(ys, f(x))
+		tinsert(tempTable, f(x))
 	end
-	return ys
+	return tempTable
 end
 
 function Postal.util.take(n, xs)
-	ys = {}
+	Postal.util.tableClear(tempTable)
 	for i=1,n do
 		if xs[i] then
-			tinsert(ys, xs[i])
+			tinsert(tempTable, xs[i])
 		end
 	end
-	return ys
+	return tempTable
+end
+
+
+function Postal.util.tableClear(tbl)
+	if type(tbl) ~= "table" then
+		return
+	end
+
+	-- Clear array-type tables first so table.insert will start over at 1.
+	for i = table.getn(tbl), 1, -1 do
+        table.remove(tbl, i)
+    end
+
+	-- Remove any remaining associative table elements.
+	-- Credit: https://stackoverflow.com/a/27287723
+	for k in next, tbl do rawset(tbl, k, nil) end
 end

@@ -1,6 +1,12 @@
 Postal.open = {}
 
-local wait_for_update, open, process, inventory_count, total_money
+-- Force these functions to be local. There are some order-of-declaration issues
+-- in this file that could be fixed with refactoring.
+local wait_for_update, open, process, money_str, returnmail
+
+-- Track money received from every mail in a given "Open" session.
+-- Used by Postal.open.start() and open().
+local total_money
 
 local controller = (function()
 	local controller
@@ -19,7 +25,7 @@ function Postal.open.start(selected, callback, mode)
 	Postal.control.on_next_update(function()
 		process(selected, function()
 			if (total_money > 0) then
-				Postal:Print("Total received: "..money_str(total_money), 1, 1, 0)
+				Postal:Print(format(POSTAL_TOTAL_MONEY, money_str(total_money)), 1, 1, 0)
 			end
 			callback()
 		end, mode)
@@ -65,6 +71,7 @@ function process(selected, k, mode)
 	end
 end
 
+
 function returnmail(i, inbox_count, k)
 	wait_for_update(function()
 		local _, _, _, _, _, _, _, _, _, wasReturned = GetInboxHeaderInfo(i)
@@ -109,65 +116,59 @@ function money_str(money)
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
 	]]--
-	
+
 	if type(money) ~= "number" then return "-" end
-  
+
 	local gold = floor(money/ 100 / 100)
 	local silver = floor(mod((money/100),100))
 	local copper = floor(mod(money,100))
-  
+
 	local string = ""
 	if gold > 0 then string = string .. "|cffffffff" .. gold .. "|cffffd700g" end
 	if silver > 0 or gold > 0 then string = string .. "|cffffffff " .. silver .. "|cffc7c7cfs" end
 	string = string .. "|cffffffff " .. copper .. "|cffeda55fc"
-  
+
 	return string
-  end
+end
 
 
-  function open(i, inbox_count, k)
+-- This function is partially based on MarcelineVQ's version of Postal: https://github.com/MarcelineVQ/Postal/blob/main/open.lua
+function open(i, inbox_count, k)
 	wait_for_update(function()
-		local _, _, _, _, money, COD_amount, _, has_item = GetInboxHeaderInfo(i)
+		local _, _, sender, subject, money, COD_amount, _, has_item = GetInboxHeaderInfo(i)
 		if GetInboxNumItems() < inbox_count then
 			return k(false)
-		elseif  COD_amount > 0 then
+		elseif COD_amount > 0 then
 			return k(true)
-			-- /script DEFAULT_CHAT_FRAME:AddMessage();
 		elseif has_item then
-			local itm_name, itm_id, itm_qty, _, _ = GetInboxItem(i)
-			local inventory_count_before = inventory_count()
+			local itm_name, _, itm_qty, _, _ = GetInboxItem(i)
 			TakeInboxItem(i)
-			Postal:Print("Received: \124Hitem:"..tostring(itm_id).."::::::::70:::::\124h["..itm_name.."]\124h (x"..tostring(itm_qty)..")", 1, 1, 0)
-			controller().wait(function() return inventory_count() > inventory_count_before end, function()
-			return open(i, inbox_count, k)
+			Postal:Print(format(POSTAL_ITEM_RECEIVED, Postal_HighlightColor, sender, itm_name, itm_qty), 1, 1, 0)
+			-- Postal:Print("Received from |c" .. Postal_HighlightColor .. sender .. "|r: " .. itm_name .. " (x" .. itm_qty .. ")", 1, 1, 0)
+			controller().wait(function() return not ({GetInboxHeaderInfo(i)})[8] or GetInboxNumItems() < inbox_count end, function()
+				return open(i, inbox_count, k)
 			end)
 		elseif money > 0 then
-			local money_before = GetMoney()
-			TakeInboxMoney(i)
 			total_money = total_money + money
-			Postal:Print("Received: "..money_str(money), 1, 1, 0)
-			controller().wait(function() return GetMoney() > money_before end, function()
-			return open(i, inbox_count, k)
+			TakeInboxMoney(i)
+			local _, ix = strfind(subject, POSTAL_AUCTION_SUCCESSFUL_SUBJECT_PATTERN)
+			if ix then
+				Postal:Print(format(POSTAL_AUCTION_SOLD, Postal_HighlightColor, strsub(subject, ix + 1), money_str(money)), 1, 1, 0)
+				-- Postal:Print("Sold |c" .. Postal_HighlightColor .. strsub(subject, ix + 1) .. "|r: " .. money_str(money), 1, 1, 0)
+			else
+				Postal:Print(format(POSTAL_MONEY_RECEIVED, Postal_HighlightColor, sender, money_str(money)), 1, 1, 0)
+				-- Postal:Print("Received from |c" .. Postal_HighlightColor .. sender .. "|r: " .. money_str(money), 1, 1, 0)
+			end
+			controller().wait(function() return ({GetInboxHeaderInfo(i)})[5] == 0 or GetInboxNumItems() < inbox_count end, function()
+				return open(i, inbox_count, k)
 			end)
 		else
-			local inbox_count_before = GetInboxNumItems()
 			DeleteInboxItem(i)
-			controller().wait(function() return GetInboxNumItems() < inbox_count_before end, function()
-			return open(i, inbox_count, k)
+			controller().wait(function() return GetInboxNumItems() < inbox_count end, function()
+				return open(i, inbox_count, k)
 			end)
 		end
 	end)
 end
 
-function inventory_count()
-	local acc = 0
-	for bag = 0, 4 do
-		if GetBagName(bag) then
-			for slot = 1, GetContainerNumSlots(bag) do
-				local _, count = GetContainerItemInfo(bag, slot)
-				acc = acc + (count or 0)
-			end
-		end
-	end
-	return acc
-end
+

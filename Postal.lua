@@ -28,6 +28,9 @@ function Postal:OnInitialize()
 	Postal_SelectedItems = {}
 	Postal_DELETEDELAY = 1
 
+	-- Color that will be used to emphasize text in chat messages.
+	Postal_HighlightColor = "ff00ff00"
+
 	PostalFrame.num = 0
 	PanelTemplates_SetNumTabs(MailFrame, 3)
 

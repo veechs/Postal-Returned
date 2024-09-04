@@ -35,3 +35,9 @@ POSTAL_INBOX_AUCTIONHOUSES =
 	["Horde Auction House"]=true,
 	["Blackwater Auction House"]=true,
 };
+
+POSTAL_ITEM_RECEIVED = "Received from |c%s%s|r: %s (x%d)"  -- "Received from <highlight color><sender>: <item> (x<quantity>)"
+POSTAL_MONEY_RECEIVED = "Received from |c%s%s|r: %s"  -- "Received from <highlight color><sender>: <money>"
+POSTAL_AUCTION_SOLD = "Sold |c%s%s|r: %s"  -- "Sold <highlight color><item>: <money>"
+POSTAL_TOTAL_MONEY = "Total received: %s"
+POSTAL_AUCTION_SUCCESSFUL_SUBJECT_PATTERN = "^Auction successful: "

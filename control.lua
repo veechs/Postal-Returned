@@ -2,6 +2,9 @@ Postal.control = {}
 
 local event_listeners = {}
 local update_listeners = {}
+local function listener_filter(listener)
+	return not listener.deleted
+end
 
 function Postal.control.on_event()
 	for listener, _ in pairs(event_listeners) do
@@ -12,8 +15,8 @@ function Postal.control.on_event()
 end
 
 function Postal.control.on_update()
-	event_listeners = Postal.util.set_filter(event_listeners, function(l) return not l.deleted end)
-	update_listeners = Postal.util.set_filter(update_listeners, function(l) return not l.deleted end)
+	Postal.util.set_filter(event_listeners, listener_filter)
+	Postal.util.set_filter(update_listeners, listener_filter)
 	
 	for listener, _ in pairs(update_listeners) do
 		if not listener.deleted then
