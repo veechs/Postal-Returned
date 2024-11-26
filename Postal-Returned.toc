@@ -1,11 +1,11 @@
-﻿## Interface: 11200
-## Version: 1.1
+## Interface: 11200
 ## Title: Postal Returned |cff7fff7f -Ace2-|r
+## Author: Grennon, Anon, Grymskvll, veechs
 ## Notes: Improved mailbox functionality
-## Notes-zhCN: 批量邮件收取发送
-## Author: Grennon, modified by Anon
-## X-Category: Interface
+## Version: 1.1
 ## OptionalDeps: Ace2
+## Notes-zhCN: 批量邮件收取发送
+## X-Category: Interface
 libs\AceLibrary\AceLibrary.lua
 libs\AceOO\AceOO-2.0.lua
 libs\AceEvent\AceEvent-2.0.lua
