@@ -18,7 +18,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		</Size>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture file="Interface\Buttons\UI-Slot-Background">
+				<Texture name="$parentBackgroundTexture" file="Interface\Buttons\UI-Slot-Background">
 					<Size>
 						<AbsDimension x="39" y="39"/>
 					</Size>
@@ -132,7 +132,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 					</Anchors>
 					<TexCoords left="0" right="1.0" top="0" bottom="0.25"/>
 				</Texture>
-				<Texture file="Interface\ClassTrainerFrame\UI-ClassTrainer-HorizontalBar">
+				<Texture name="PostalHorizontalBarRight" file="Interface\ClassTrainerFrame\UI-ClassTrainer-HorizontalBar">
 					<Size>
 						<AbsDimension x="75" y="16"/>
 					</Size>
@@ -883,7 +883,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		<Anchors>
 			<Anchor relativePoint="TOP" point="RIGHT">
 				<Offset>
-					<AbsDimension x="5" y="-53"/>
+					<AbsDimension x="5" y="-55"/>
 				</Offset>
 			</Anchor>
 		</Anchors>
@@ -901,7 +901,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		<Anchors>
 			<Anchor relativePoint="TOP" point="LEFT">
 				<Offset>
-					<AbsDimension x="10" y="-53"/>
+					<AbsDimension x="10" y="-55"/>
 				</Offset>
 			</Anchor>
 		</Anchors>

@@ -2,6 +2,113 @@ Postal = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceHook-2.0")
 
 function Postal:OnInitialize()
 
+	local mailItemLeftOffset = 48
+	local mailItemWidth = 280
+	local mailItemExpireRightOffset = 10
+
+	-- pfUI skinning.
+	if IsAddOnLoaded("pfUI") and pfUI and pfUI.api and pfUI.env and pfUI.env.C then
+
+		pfUI:RegisterSkin("Postal Returned", "vanilla", function ()
+			if pfUI.env.C.disabled and pfUI.env.C.disabled["skin_Postal Returned"] == "1" then
+				return
+			end
+
+			local rawborder, border = pfUI.api.GetBorderSize()
+			local _, bagsBorder = pfUI.api.GetBorderSize("bags")
+			local bpad = rawborder > 1 and border - pfUI.api.GetPerfectPixel() or pfUI.api.GetPerfectPixel()
+
+			-- Inbox.
+			pfUI.api.SkinButton(PostalInboxOpenButton)
+			pfUI.api.SkinButton(PostalInboxReturnButton)
+
+			pfUI.api.SkinCheckbox(PostalBoxItem1CB)
+			pfUI.api.SkinCheckbox(PostalBoxItem2CB)
+			pfUI.api.SkinCheckbox(PostalBoxItem3CB)
+			pfUI.api.SkinCheckbox(PostalBoxItem4CB)
+			pfUI.api.SkinCheckbox(PostalBoxItem5CB)
+			pfUI.api.SkinCheckbox(PostalBoxItem6CB)
+			pfUI.api.SkinCheckbox(PostalBoxItem7CB)
+
+			-- Reposition our buttons so they're centered.
+			PostalInboxReturnButton:ClearAllPoints()
+			PostalInboxReturnButton:SetPoint("TOP", InboxFrame, "TOP", 0, -45)
+			PostalInboxReturnButton:SetPoint("RIGHT", InboxFrame, "CENTER", -5, 0)
+			PostalInboxOpenButton:ClearAllPoints()
+			PostalInboxOpenButton:SetPoint("TOP", InboxFrame, "TOP", 0, -45)
+			PostalInboxOpenButton:SetPoint("LEFT", InboxFrame, "CENTER", 5, 0)
+
+			-- Need to adjust and widen the mail items and background.
+			mailItemLeftOffset = 50
+			mailItemWidth = 290
+			mailItemExpireRightOffset = -10
+			InboxFrame.backdrop:SetPoint("TOPLEFT", MailItem1, "TOPLEFT", -28, 1)
+
+			-- Mass Mail.
+			PostalTitleText:ClearAllPoints()
+    		PostalTitleText:SetPoint("TOP", MailFrame.backdrop, "TOP", 0, -10)
+
+			pfUI.api.SkinTab(MailFrameTab3)
+			MailFrameTab3:ClearAllPoints()
+  			MailFrameTab3:SetPoint("LEFT", MailFrameTab2, "RIGHT", border*2 + 1, 0)
+
+			pfUI.api.StripTextures(PostalNameEditBox, nil, "BACKGROUND")
+    		pfUI.api.CreateBackdrop(PostalNameEditBox, nil, true)
+			pfUI.api.StripTextures(PostalSubjectEditBox, nil, "BACKGROUND")
+    		pfUI.api.CreateBackdrop(PostalSubjectEditBox, nil, true)
+
+			PostalHelpText:SetPoint("TOPLEFT", 36, -105)
+
+			PostalHorizontalBarLeft:SetTexture("")
+			PostalHorizontalBarRight:SetTexture("")
+
+			pfUI.api.SkinButton(PostalAbortButton)
+			pfUI.api.SkinButton(PostalCancelButton)
+			pfUI.api.SkinButton(PostalMailButton)
+
+			PostalMailButton:ClearAllPoints()
+			PostalMailButton:SetPoint("RIGHT", PostalCancelButton, "LEFT", -2*bpad, 0)
+
+			PostalButton1:SetPoint("TOPLEFT", 42, -200)
+
+			local buttonNum = 1
+			while true do
+				local buttonName = "PostalButton" .. buttonNum
+				local button = getglobal(buttonName)
+				if not button then
+					break
+				end
+				button:SetHeight(33)
+				button:SetWidth(33)
+				local buttonTexture = getglobal(buttonName .. "BackgroundTexture")
+				buttonTexture:SetTexture("")
+				pfUI.api.CreateBackdrop(button, bagsBorder)
+				local icon = getglobal(buttonName .. "IconTexture")
+				icon:SetTexCoord(.08, .92, .08, .92)
+				icon:ClearAllPoints()
+				icon:SetPoint("TOPLEFT", 1, -1)
+				icon:SetPoint("BOTTOMRIGHT", -1, 1)
+				local highlight = button:GetHighlightTexture()
+				highlight:SetTexture(.5, .5, .5, .5)
+				-- buttonTexture:SetTexCoord(0, 0.640625, 0, 0.640625)
+				buttonNum = buttonNum + 1
+			end
+
+
+			-- Mass Mail accept dialog.
+			pfUI.api.CreateBackdrop(PostalAcceptSendFrame)
+			pfUI.api.CreateBackdropShadow(PostalAcceptSendFrame)
+			PostalAcceptSendFrameHeaderTexture:SetTexture("")
+			pfUI.api.SkinButton(PostalAcceptSendFrameSendButton)
+			PostalAcceptSendFrameSendButton:ClearAllPoints()
+			PostalAcceptSendFrameSendButton:SetPoint("BOTTOMRIGHT", PostalAcceptSendFrame, "BOTTOM", -4, 5)
+			pfUI.api.SkinButton(PostalAcceptSendFrameCancelButton)
+			PostalAcceptSendFrameCancelButton:ClearAllPoints()
+			PostalAcceptSendFrameCancelButton:SetPoint("BOTTOMLEFT", PostalAcceptSendFrame, "BOTTOM", 4, 5)
+		end)
+
+	end
+
 	-- Allows the mail frame to be pushed
 	if UIPanelWindows["MailFrame"] then
 		UIPanelWindows["MailFrame"].pushable = 1
@@ -16,10 +123,10 @@ function Postal:OnInitialize()
 		UIPanelWindows["FriendsFrame"] = { area = "left", pushable = 2 }
 	end
 
-	MailItem1:SetPoint("TOPLEFT", "InboxFrame", "TOPLEFT", 48, -80)
+	MailItem1:SetPoint("TOPLEFT", "InboxFrame", "TOPLEFT", mailItemLeftOffset, -80)
 	for i = 1, 7 do
-		getglobal("MailItem" .. i .. "ExpireTime"):SetPoint("TOPRIGHT", "MailItem" .. i, "TOPRIGHT", 10, -4)
-		getglobal("MailItem" .. i):SetWidth(280)
+		getglobal("MailItem" .. i .. "ExpireTime"):SetPoint("TOPRIGHT", "MailItem" .. i, "TOPRIGHT", mailItemExpireRightOffset, -4)
+		getglobal("MailItem" .. i):SetWidth(mailItemWidth)
 	end
 
 	POSTAL_NUMITEMBUTTONS = 21
@@ -773,7 +880,7 @@ function Postal:Forward_OnUpdate(elapsed)
 			end
 		end
 	end
-	this.process = this.process - elapsed
+	this.process = (this.process or 0) - elapsed
 	if this.process <= 0 then
 		this.process = 3
 		if getn(Postal_ScheduledStack) > 0 then

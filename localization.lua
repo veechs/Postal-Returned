@@ -1,6 +1,6 @@
 POSTAL_HELP = "Fill in as many slots as you want. Each item will be sent in a separate mail to the recipient, with the subject you specify, followed by the item's name and count (for example: <Subject> [Gold Bar x10]). The combined postage is shown in the top right. You can alt-click on items in your bags to add them to the list automatically.";
 
-POSTAL_SEND = "Send Mail";
+POSTAL_SEND = "Mass Mail";
 POSTAL_SENDBUTTON = "Send";
 POSTAL_CANCELBUTTON = "Cancel";
 

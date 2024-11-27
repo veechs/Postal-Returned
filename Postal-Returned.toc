@@ -3,7 +3,7 @@
 ## Author: Grennon, Anon, Grymskvll, veechs
 ## Notes: Improved mailbox functionality
 ## Version: 1.1
-## OptionalDeps: Ace2
+## OptionalDeps: Ace2, pfUI
 ## Notes-zhCN: 批量邮件收取发送
 ## X-Category: Interface
 libs\AceLibrary\AceLibrary.lua
