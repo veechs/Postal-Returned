@@ -786,15 +786,16 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 			<AbsDimension x="32" y="32"/>
 		</Size>
 		<Anchors>
-			<Anchor point="TOP" relativePoint="BOTTOM">
+			<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT">
 				<Offset>
-					<AbsDimension x="26" y="5"/>
+					<AbsDimension x="4" y="8"/>
 				</Offset>
 			</Anchor>
 		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture name="$parentTexture" file="Interface\Addons\Postal Returned\UI-RotationRight-Big-Up-Mod">
+				<!-- This texture is set in Postal:OnInitialize(). -->
+				<Texture name="$parentTexture">
 					<Size>
 						<AbsDimension x="32" y="32"/>
 					</Size>
@@ -805,7 +806,6 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 							</Offset>
 						</Anchor>
 					</Anchors>
-					<TexCoords left="1" right="0" top="0" bottom="1"/>
 				</Texture>
 			</Layer>
 		</Layers>
@@ -820,30 +820,31 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		</Scripts>
 	</Frame>
 	
-	<Frame name="PostalBoxReturnedArrow1" parent="MailItem1ExpireTime" hidden="false" inherits="PostalBoxReturnedArrowTemplate"/>
-	<Frame name="PostalBoxReturnedArrow2" parent="MailItem2ExpireTime" hidden="false" inherits="PostalBoxReturnedArrowTemplate"/>
-	<Frame name="PostalBoxReturnedArrow3" parent="MailItem3ExpireTime" hidden="false" inherits="PostalBoxReturnedArrowTemplate"/>
-	<Frame name="PostalBoxReturnedArrow4" parent="MailItem4ExpireTime" hidden="false" inherits="PostalBoxReturnedArrowTemplate"/>
-	<Frame name="PostalBoxReturnedArrow5" parent="MailItem5ExpireTime" hidden="false" inherits="PostalBoxReturnedArrowTemplate"/>
-	<Frame name="PostalBoxReturnedArrow6" parent="MailItem6ExpireTime" hidden="false" inherits="PostalBoxReturnedArrowTemplate"/>
-	<Frame name="PostalBoxReturnedArrow7" parent="MailItem7ExpireTime" hidden="false" inherits="PostalBoxReturnedArrowTemplate"/>
+	<Frame name="PostalBoxReturnedArrow1" parent="MailItem1ExpireTime" hidden="true" inherits="PostalBoxReturnedArrowTemplate"/>
+	<Frame name="PostalBoxReturnedArrow2" parent="MailItem2ExpireTime" hidden="true" inherits="PostalBoxReturnedArrowTemplate"/>
+	<Frame name="PostalBoxReturnedArrow3" parent="MailItem3ExpireTime" hidden="true" inherits="PostalBoxReturnedArrowTemplate"/>
+	<Frame name="PostalBoxReturnedArrow4" parent="MailItem4ExpireTime" hidden="true" inherits="PostalBoxReturnedArrowTemplate"/>
+	<Frame name="PostalBoxReturnedArrow5" parent="MailItem5ExpireTime" hidden="true" inherits="PostalBoxReturnedArrowTemplate"/>
+	<Frame name="PostalBoxReturnedArrow6" parent="MailItem6ExpireTime" hidden="true" inherits="PostalBoxReturnedArrowTemplate"/>
+	<Frame name="PostalBoxReturnedArrow7" parent="MailItem7ExpireTime" hidden="true" inherits="PostalBoxReturnedArrowTemplate"/>
 	
 	<Frame name="PostalBoxAuctionTemplate" virtual="true" hidden="true">
 		<Size>
 			<AbsDimension x="32" y="32"/>
 		</Size>
 		<Anchors>
-			<Anchor point="TOP" relativePoint="BOTTOM">
+			<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT">
 				<Offset>
-					<AbsDimension x="26" y="5"/>
+					<AbsDimension x="4" y="8"/>
 				</Offset>
 			</Anchor>
 		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture name="$parentTexture" file="Interface\Addons\Postal Returned\Postal-Inbox-AH">
+				<!-- This texture is set in Postal:OnInitialize(). -->
+				<Texture name="$parentTexture">
 					<Size>
-						<AbsDimension x="32" y="32"/>
+						<AbsDimension x="28" y="28"/>
 					</Size>
 					<Anchors>
 						<Anchor point="CENTER">
@@ -866,13 +867,13 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		</Scripts>
 	</Frame>
 	
-	<Frame name="PostalBoxAuctionIcon1" parent="MailItem1ExpireTime" hidden="false" inherits="PostalBoxAuctionTemplate"/>
-	<Frame name="PostalBoxAuctionIcon2" parent="MailItem2ExpireTime" hidden="false" inherits="PostalBoxAuctionTemplate"/>
-	<Frame name="PostalBoxAuctionIcon3" parent="MailItem3ExpireTime" hidden="false" inherits="PostalBoxAuctionTemplate"/>
-	<Frame name="PostalBoxAuctionIcon4" parent="MailItem4ExpireTime" hidden="false" inherits="PostalBoxAuctionTemplate"/>
-	<Frame name="PostalBoxAuctionIcon5" parent="MailItem5ExpireTime" hidden="false" inherits="PostalBoxAuctionTemplate"/>
-	<Frame name="PostalBoxAuctionIcon6" parent="MailItem6ExpireTime" hidden="false" inherits="PostalBoxAuctionTemplate"/>
-	<Frame name="PostalBoxAuctionIcon7" parent="MailItem7ExpireTime" hidden="false" inherits="PostalBoxAuctionTemplate"/>
+	<Frame name="PostalBoxAuctionIcon1" parent="MailItem1ExpireTime" hidden="true" inherits="PostalBoxAuctionTemplate"/>
+	<Frame name="PostalBoxAuctionIcon2" parent="MailItem2ExpireTime" hidden="true" inherits="PostalBoxAuctionTemplate"/>
+	<Frame name="PostalBoxAuctionIcon3" parent="MailItem3ExpireTime" hidden="true" inherits="PostalBoxAuctionTemplate"/>
+	<Frame name="PostalBoxAuctionIcon4" parent="MailItem4ExpireTime" hidden="true" inherits="PostalBoxAuctionTemplate"/>
+	<Frame name="PostalBoxAuctionIcon5" parent="MailItem5ExpireTime" hidden="true" inherits="PostalBoxAuctionTemplate"/>
+	<Frame name="PostalBoxAuctionIcon6" parent="MailItem6ExpireTime" hidden="true" inherits="PostalBoxAuctionTemplate"/>
+	<Frame name="PostalBoxAuctionIcon7" parent="MailItem7ExpireTime" hidden="true" inherits="PostalBoxAuctionTemplate"/>
 	
 	
 	

@@ -4,7 +4,7 @@ function Postal:OnInitialize()
 
 	local mailItemLeftOffset = 48
 	local mailItemWidth = 280
-	local mailItemExpireRightOffset = 10
+	local mailItemExpireRightOffset = 4
 
 	-- pfUI skinning.
 	if IsAddOnLoaded("pfUI") and pfUI and pfUI.api and pfUI.env and pfUI.env.C then
@@ -121,12 +121,26 @@ function Postal:OnInitialize()
 		UIPanelWindows["FriendsFrame"].pushable = 2
 	else
 		UIPanelWindows["FriendsFrame"] = { area = "left", pushable = 2 }
-	end
+	end 
 
+	-- Part 1 of adjusting mail list entry sizes.
 	MailItem1:SetPoint("TOPLEFT", "InboxFrame", "TOPLEFT", mailItemLeftOffset, -80)
+
+	-- Texture paths need to vary based on whether old or new TOC is loaded.
+	local addonPath = "Interface\\Addons\\" .. ((IsAddOnLoaded("Postal Returned") and not IsAddOnLoaded("Postal-Returned")) and "Postal Returned" or "Postal-Returned") .. "\\"
+
 	for i = 1, 7 do
-		getglobal("MailItem" .. i .. "ExpireTime"):SetPoint("TOPRIGHT", "MailItem" .. i, "TOPRIGHT", mailItemExpireRightOffset, -4)
+		-- Part 2 of adjusting mail list entry sizes.
+		getglobal("MailItem" .. i .. "ExpireTime"):SetPoint("TOPRIGHT", "MailItem" .. i, "TOPRIGHT", mailItemExpireRightOffset, -5)
 		getglobal("MailItem" .. i):SetWidth(mailItemWidth)
+
+		-- Set icon textures.
+		getglobal("PostalBoxAuctionIcon"..i.."Texture"):SetTexture(addonPath .. "Postal-Inbox-AH")
+		getglobal("PostalBoxReturnedArrow"..i.."Texture"):SetTexture(addonPath .. "Postal-Inbox-RetArrow")
+
+		-- Set icon colors.
+		getglobal("PostalBoxAuctionIcon"..i.."Texture"):SetVertexColor(NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b)
+		getglobal("PostalBoxReturnedArrow"..i.."Texture"):SetVertexColor(NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b)
 	end
 
 	POSTAL_NUMITEMBUTTONS = 21
@@ -705,9 +719,7 @@ function Postal:InboxFrame_Update()
 					break
 				end
 			end
-			
-			
-			
+
 			local invoiceType = GetInboxInvoiceInfo(index);
 			local _, _, sender, _, _, _, _, _, _, wasReturned = GetInboxHeaderInfo(index)
 			if invoiceType or POSTAL_INBOX_AUCTIONHOUSES[sender] then
@@ -722,6 +734,7 @@ function Postal:InboxFrame_Update()
 			end
 		end
 	end
+	imagePathsChecked = true
 	if PostalInboxFrame.num then
 		Postal:Inbox_DisableClicks(1, 1)
 	end
