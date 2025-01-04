@@ -869,6 +869,10 @@ function Postal:SendMailMailButton_OnClick()
 end
 
 function Postal:Forward_OnUpdate(elapsed)
+	-- Make sure we don't try to do anything before initialization is complete.
+	if not Postal_ScheduledStack then
+		return
+	end
 	if this.forwardStep and this.forwardStep > 1 then
 		if this.countDown then
 			this.countDown = this.countDown - elapsed
