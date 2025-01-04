@@ -12,7 +12,8 @@ Mail addon for Vanilla WoW 1.12 (including Turtle WoW). *Not* compatible with Re
 
 ### Easy mode (recommended)
 
-Use [GitAddonsManager](https://woblight.gitlab.io/overview/gitaddonsmanager/) or another tool that supports GitHub links.
+Use [GitAddonsManager](https://woblight.gitlab.io/overview/gitaddonsmanager/).  
+<sup>Or any tool that supports Git.</sup>
 
 ### Manual steps
 
@@ -24,6 +25,6 @@ Use [GitAddonsManager](https://woblight.gitlab.io/overview/gitaddonsmanager/) or
    <sup>*These are all **wrong**:*  
     × `Postal-Returned-master\Postal-Returned.toc`  
     × `Postal-Returned\Postal-Returned\Postal-Returned.toc`  
-	 × `Postal-Returned\Postal-Returned-master\Postal-Returned.toc`
+    × `Postal-Returned\Postal-Returned-master\Postal-Returned.toc`
    </sup>
 
