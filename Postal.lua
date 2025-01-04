@@ -1,6 +1,36 @@
+local POSTAL_NUMITEMBUTTONS = 21
+local Postal_DELETEDELAY = 1
+
+local Postal_BagLinks = {}
+local Postal_ScheduledStack = {}
+local Postal_SelectedItems = {}
+
+-- Color that will be used to emphasize text in chat messages.
+-- Currently needs to be a global because it's used in open.lua.
+Postal_HighlightColor = "ff00ff00"
+
+
+
 Postal = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceHook-2.0")
 
 function Postal:OnInitialize()
+
+	PostalFrame.num = 0
+	PanelTemplates_SetNumTabs(MailFrame, 3)
+
+	PostalForwardFrame.pickItem = {}
+	PostalForwardFrame.process = 0
+
+	PostalGlobalFrame.queue = {}
+	PostalGlobalFrame.update = 0
+	PostalGlobalFrame.total = 0
+	PostalGlobalFrame.sendmail = 0
+	PostalGlobalFrame.latency = 2.25
+
+	PostalTooltip:SetOwner(WorldFrame, "ANCHOR_NONE")
+
+	PostalInboxFrame.eventFunc = {}
+
 
 	local mailItemLeftOffset = 48
 	local mailItemWidth = 280
@@ -10,7 +40,14 @@ function Postal:OnInitialize()
 	if IsAddOnLoaded("pfUI") and pfUI and pfUI.api and pfUI.env and pfUI.env.C then
 
 		pfUI:RegisterSkin("Postal Returned", "vanilla", function ()
-			if pfUI.env.C.disabled and pfUI.env.C.disabled["skin_Postal Returned"] == "1" then
+			if
+				pfUI.env.C.disabled
+				and (
+					pfUI.env.C.disabled["skin_Postal Returned"] == "1"
+					-- Don't apply our skin when Mailbox skin is disabled because it doesn't make sense.
+					or pfUI.env.C.disabled["skin_Mailbox"] == "1"
+				)
+			then
 				return
 			end
 
@@ -42,20 +79,24 @@ function Postal:OnInitialize()
 			mailItemLeftOffset = 50
 			mailItemWidth = 290
 			mailItemExpireRightOffset = -10
-			InboxFrame.backdrop:SetPoint("TOPLEFT", MailItem1, "TOPLEFT", -28, 1)
+			-- Make sure the backdrop exists before interacting with it.
+			-- This should be safe due to the check for the Mailbox skin, but just to be sure...
+			if InboxFrame.backdrop then
+				InboxFrame.backdrop:SetPoint("TOPLEFT", MailItem1, "TOPLEFT", -28, 1)
+			end
 
 			-- Mass Mail.
 			PostalTitleText:ClearAllPoints()
-    		PostalTitleText:SetPoint("TOP", MailFrame.backdrop, "TOP", 0, -10)
+			PostalTitleText:SetPoint("TOP", MailFrame.backdrop, "TOP", 0, -10)
 
 			pfUI.api.SkinTab(MailFrameTab3)
 			MailFrameTab3:ClearAllPoints()
   			MailFrameTab3:SetPoint("LEFT", MailFrameTab2, "RIGHT", border*2 + 1, 0)
 
 			pfUI.api.StripTextures(PostalNameEditBox, nil, "BACKGROUND")
-    		pfUI.api.CreateBackdrop(PostalNameEditBox, nil, true)
+			pfUI.api.CreateBackdrop(PostalNameEditBox, nil, true)
 			pfUI.api.StripTextures(PostalSubjectEditBox, nil, "BACKGROUND")
-    		pfUI.api.CreateBackdrop(PostalSubjectEditBox, nil, true)
+			pfUI.api.CreateBackdrop(PostalSubjectEditBox, nil, true)
 
 			PostalHelpText:SetPoint("TOPLEFT", 36, -105)
 
@@ -143,30 +184,6 @@ function Postal:OnInitialize()
 		getglobal("PostalBoxReturnedArrow"..i.."Texture"):SetVertexColor(NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b)
 	end
 
-	POSTAL_NUMITEMBUTTONS = 21
-	Postal_BagLinks = {}
-	Postal_ScheduledStack = {}
-	Postal_SelectedItems = {}
-	Postal_DELETEDELAY = 1
-
-	-- Color that will be used to emphasize text in chat messages.
-	Postal_HighlightColor = "ff00ff00"
-
-	PostalFrame.num = 0
-	PanelTemplates_SetNumTabs(MailFrame, 3)
-
-	PostalForwardFrame.pickItem = {}
-	PostalForwardFrame.process = 0
-
-	PostalGlobalFrame.queue = {}
-	PostalGlobalFrame.update = 0
-	PostalGlobalFrame.total = 0
-	PostalGlobalFrame.sendmail = 0
-	PostalGlobalFrame.latency = 2.25
-
-	PostalTooltip:SetOwner(WorldFrame, "ANCHOR_NONE")
-
-	PostalInboxFrame.eventFunc = {}
 end
 
 function Postal:OnEnable()
