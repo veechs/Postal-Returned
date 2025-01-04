@@ -1,3 +1,4 @@
+## Interface: 11200
 ## Why-Is-This-Here: This is the inherited TOC file from the original Postal Returned author. The Turtle WoW launcher doesn't rename folders to match the TOC file, and repositories can't have spaces in the name, so the most expedient solution was to add Postal-Returned.toc and keep the existing Postal Returned.toc so peoples' existing copies installed via GitAddonsManager don't break.
 ## Title: Postal Returned |cff7fff7f -Ace2-|r
 ## Author: Grennon, Anon, Grymskvll, veechs
