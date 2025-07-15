@@ -4,6 +4,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 	<Script file="localization.ge.lua"/>
 	<Script file="localization.fr.lua"/>
 	<Script file="localization.cn.lua"/>
+	<Script file="localization.ru.lua"/>
 	<Script file="Postal.lua"/>
 	<frame>
 		<Scripts>
@@ -586,7 +587,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		</Scripts>
 	</Frame>
 
-	<Button name="MailFrameTab3" inherits="FriendsFrameTabTemplate" id="3" parent="MailFrame" text="Mass Mail">
+	<Button name="MailFrameTab3" inherits="FriendsFrameTabTemplate" id="3" parent="MailFrame" text="POSTAL_SEND">
 		<Anchors>
 			<Anchor point="LEFT" relativeTo="MailFrameTab2" relativePoint="RIGHT">
 				<Offset>
@@ -914,7 +915,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 	</Button>
 	
 	<!-- Mail forwarding -->
-	<Button name="OpenMailForwardButton" parent="OpenMailFrame" inherits="UIPanelButtonTemplate" text="Forward">
+	<Button name="OpenMailForwardButton" parent="OpenMailFrame" inherits="UIPanelButtonTemplate" text="POSTAL_INBOX_FORWARD">
 		<Size>
 			<AbsDimension x="82" y="22"/>
 		</Size>

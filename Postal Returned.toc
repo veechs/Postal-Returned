@@ -3,6 +3,7 @@
 ## Title: Postal Returned |cff7fff7f -Ace2-|r
 ## Author: Grennon, Anon, Grymskvll, veechs
 ## Notes: Improved mailbox functionality
+## Notes-ruRU: Улучшенный функционал почтового ящика
 ## Version: 1.1.1
 ## OptionalDeps: Ace2
 ## Notes-zhCN: 批量邮件收取发送
