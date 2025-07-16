@@ -587,7 +587,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		</Scripts>
 	</Frame>
 
-	<Button name="MailFrameTab3" inherits="FriendsFrameTabTemplate" id="3" parent="MailFrame" text="POSTAL_SEND">
+	<Button name="MailFrameTab3" inherits="FriendsFrameTabTemplate" id="3" parent="MailFrame" text="POSTAL_MASS_MAIL">
 		<Anchors>
 			<Anchor point="LEFT" relativeTo="MailFrameTab2" relativePoint="RIGHT">
 				<Offset>
@@ -915,7 +915,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 	</Button>
 	
 	<!-- Mail forwarding -->
-	<Button name="OpenMailForwardButton" parent="OpenMailFrame" inherits="UIPanelButtonTemplate" text="POSTAL_INBOX_FORWARD">
+	<Button name="OpenMailForwardButton" parent="OpenMailFrame" inherits="UIPanelButtonTemplate" text="POSTAL_FORWARD">
 		<Size>
 			<AbsDimension x="82" y="22"/>
 		</Size>
