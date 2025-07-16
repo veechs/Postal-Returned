@@ -21,10 +21,12 @@ POSTAL_INBOX_OPENALLTITLE = "Open All?";
 POSTAL_INBOX_OPENALLCONFIRMATION = "Are you sure you want to open all mail?";
 POSTAL_INBOX_DISPLAYPROCESSMESSAGES = "Display process messages";
 
+POSTAL_MASS_MAIL = "Mass Mail";
+POSTAL_FORWARD = "Forward";
+
 POSTAL_INBOX_RETURNSELECTED = "Return Selected";
 POSTAL_INBOX_RETURNALL = "Return All";
 POSTAL_INBOX_RETURNTOOLTIP = "This mail was returned to you.";
-POSTAL_INBOX_FORWARD = "Forward";
 POSTAL_INBOX_AUCTIONTOOLTIP = "This mail was sent by an auctionhouse.";
 POSTAL_INBOX_AUCTIONHOUSES = 
 {

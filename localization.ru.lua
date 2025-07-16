@@ -22,10 +22,12 @@ POSTAL_INBOX_OPENALLTITLE = "Открыть все?";
 POSTAL_INBOX_OPENALLCONFIRMATION = "Вы уверены, что хотите открыть все письма?";
 POSTAL_INBOX_DISPLAYPROCESSMESSAGES = "Показывать сообщения о процессе";
 
+POSTAL_MASS_MAIL = "Массовая рассылка";
+POSTAL_FORWARD = "Переслать";
+
 POSTAL_INBOX_RETURNSELECTED = "Вернуть выбранные";
 POSTAL_INBOX_RETURNALL = "Вернуть все";
 POSTAL_INBOX_RETURNTOOLTIP = "Это письмо было возвращено вам.";
-POSTAL_INBOX_FORWARD = "Переслать";
 POSTAL_INBOX_AUCTIONTOOLTIP = "Это письмо было отправлено аукционом.";
 POSTAL_INBOX_AUCTIONHOUSES = 
 {
